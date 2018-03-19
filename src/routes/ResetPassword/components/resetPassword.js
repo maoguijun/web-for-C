@@ -1,266 +1,373 @@
+import { connect } from 'react-redux'
+import { fetchVerificationCode, updatePwd, checkVerificationCode, checkCaptcha } from '../modules/resetPwd'
 import React, { Component } from 'react'
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl'
-// import ImmutablePropTypes from 'react-immutable-proptypes'
-import { Icon, Form, Input, Button, Row, Col, Alert, message, notification, Modal } from 'antd'
-import LocaleBtn from '../../../containers/global/LocaleBtn'
-import { fetchState } from 'config'
+import { browserHistory } from 'react-router'
+import { injectIntl, intlShape } from 'react-intl'
+import { fetchState, host } from 'config'
+import { pathJump } from '../../../utils/'
 import { encryptAes, encryptSha256 } from '../../../utils/common'
-import moment from 'moment'
-const FormItem = Form.Item
-import './resetPassword_.scss'
-import logo1 from '../../../../public/logos/logo1.png'
-
-export class ResetPWD extends Component {
+/** */
+export class ResetPwd extends Component {
   constructor (props) {
     super(props)
     this.state = {
       loading: false,
-      count: 0,
-      updatePwdModal: false
+      step: 1,
+      code: '', // 本地生成的验证码图片
+      pwd: '123456',
+      email: '',
+      setvalue: '',
+      value: '',
+      Vcode: '', // 邮箱验证码的输入框的值，
+      inputCode: '' // 验证码输入框的值
     }
   }
-  componentWillUnmount () {
-    clearInterval(this.interval)
-    notification.close('resetcode')
+  componentWillMount () {
+    // this.createCode()
   }
-  onGetCaptcha = () => {
-    // 每次获取验证码都要先关上之前的notification
-    notification.close('restcode')
-    this.props.form.validateFields(['mail'], (err, value) => {
-      if (err) {
-        console.log(err)
-        return
+  /** 先验证图片验证码，再请求邮箱验证码 */
+  getEmailCode = () => {
+    const { email, inputCode, emailError, inputCodeError, step } = this.state
+    const { dispatch } = this.props
+    //
+    if (!email || !email.length) {
+      alert('请输入邮箱')
+      return
+    }
+    if (!inputCode || !inputCode.length) {
+      alert('请输入验证码')
+      return
+    }
+    let json = {
+      mail: email,
+      accountType: '3'
+    }
+    dispatch(checkCaptcha({ captcha: inputCode })).then(event => {
+      if (event.error) {
+        alert(event.error.message)
       } else {
-        let json = {
-          accountType: 0,
-          ...value
-        }
-        this.props.fetchVerificationCode(json).then(e => {
+        dispatch(fetchVerificationCode(json)).then(e => {
           if (e.error) {
-            message.error(e.error.message, 1)
+            alert(e.error.message)
           } else {
-            let count = 59
-            this.setState({ count })
-            this.interval = setInterval(() => {
-              count -= 1
-              this.setState({ count })
-              if (count === 0) {
-                clearInterval(this.interval)
+            this.setState(
+              {
+                step: step + 1
+              },
+              () => {
+                if (e.payload.code) {
+                  setTimeout(() => alert(e.payload.testBody), 50)
+                }
               }
-            }, 1000)
-            if (e.payload && e.payload.code) {
-              const args = {
-                key: 'resetcode',
-                message: '您正在重置密码',
-                description: `您的验证码是：${e.payload.code}`,
-                duration: 300
-              }
-              notification.open(args)
-            }
+            )
           }
         })
       }
     })
   }
-  render () {
-    const { getFieldDecorator } = this.props.form
-    const { formatMessage } = this.props.intl
-    const { loading, count, updatePwdModal } = this.state
-    const baseLeft = 6
-    const baseRight = 17
-    const formItemLayout = {
-      labelCol: { span: baseLeft },
-      wrapperCol: { span: baseRight }
+  /** 验证 邮箱验证码 */
+  checkCode = e => {
+    const { dispatch } = this.props
+    const { email, Vcode } = this.state
+    const step = this.state.step
+    // todo
+    let json = {
+      mail: email,
+      accountType: '3',
+      verificationCode: Vcode
     }
-
-    const username = formatMessage({ id: 'login_username' })
-    const password = formatMessage({ id: 'login_password' })
-    const oldPassword = formatMessage({ id: 'login_oldPassword' })
+    dispatch(checkVerificationCode(json)).then(e => {
+      if (e.error) {
+        alert(e.error.message)
+      } else {
+        this.setState({
+          step: step + 1
+        })
+      }
+    })
+  }
+  handleInputCode = e => {
+    this.setState({
+      inputCode: e.target.value
+    })
+  }
+  handleEmail = e => {
+    let value = e.target.value
+    let error = ''
+    if (
+      !/^[a-zA-Z0-9.!#$%&'*+\/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/.test(
+        value
+      )
+    ) {
+      error = '请输入正确的Email'
+    }
+    this.setState({
+      email: value,
+      emailError: error
+    })
+  }
+  handlePwd = event => {
+    const setvalue = this.state.setvalue
+    this.setState({
+      setvalue: event.target.value
+    })
+  }
+  handlePwdtwo = event => {
+    const value = this.state.value
+    this.setState({
+      value: event.target.value
+    })
+  }
+  submit = () => {
+    const { pathJump, dispatch } = this.props
+    const { setvalue, value, email, Vcode } = this.state
+    if (setvalue === '' && value === '') {
+      alert('请将密码填写完整')
+      return
+    }
+    if (setvalue === value) {
+      let json = {
+        verificationCode: Vcode,
+        mail: email,
+        accountType: '3',
+        password: encryptSha256(value)
+      }
+      console.log(json)
+      dispatch(updatePwd(json)).then(e => {
+        if (e.error) {
+          alert(e.error.message)
+        } else {
+          this.setState({
+            setvalue: '',
+            value: ''
+          })
+          alert('密码设置成功!')
+          browserHistory.push('/login')
+        }
+      })
+    } else {
+      alert('您输入的密码不匹配!')
+    }
+  }
+  deteleemail = () => {
+    let email = this.refs.email.value
+    this.setState({
+      email: ''
+    })
+  }
+  clearInput = name => {
+    this.setState({
+      [name]: ''
+    })
+  }
+  createCode = () => {
+    // 修改 验证码的版本
+    this.setState({
+      code: new Date().getTime()
+    })
+  }
+  render () {
+    const { pathJump } = this.props
+    const { step, code, email, inputCode } = this.state
     return (
-      <Row type='flex' justify='center' align='middle' className='login'>
-        <Col className='login-wrap'>
-          {/* <LocaleBtn /> */}
-          <div className='logo'>
-            <img src={logo1} />
+      <div className='edit'>
+        <div className='prop-login'>
+          <div className='login-top clearfix'>
+            <a className='logo1'>
+              <img src='./2.png' />
+            </a>
+            <div className='img-logo'>
+              <a>
+                <img src='./logo.png' width='100%' height='' />
+              </a>
+              <span className='learn'>Online Learning</span>
+            </div>
+            <div className='fr login-res'>
+              <a>登录</a>
+              <a>|</a>
+              <a className='gray bold'>注册</a>
+            </div>
           </div>
-          <Form
-            hideRequiredMark
-            ref={f => {
-              this.formLo = f
-            }}
-            onSubmit={e => {
-              let page
-              e.preventDefault()
-              this.props.form.validateFields((err, values) => {
-                if (!err) {
-                  // 加密处理
-                  console.log(moment().valueOf())
-                  let pwd = encryptSha256(values.password)
-                  values = {
-                    ...values,
-                    password: pwd,
-                    accountType: '0'
-                  }
-                  if (!values.verificationCode) {
-                    message.error('请输入验证码！', 1)
-                    return
-                  }
-                  console.log('form', values)
-                  this.setState({ loading: true })
-                  this.props.resetPwd(values).then(e => {
-                    if (e.payload) {
-                      message.success('密码重置成功', 1)
-                      this.props.pathJump('/login')
-                    } else {
-                      this.setState({
-                        loading: false
-                      })
-                      message.error(e.error.message, 1)
-                    }
-                  })
-                }
-              })
-            }}
-          >
-            <h1>{formatMessage({ id: 'update_password' })}</h1>
-            {/* <Col offset={baseLeft} span={baseRight}>
-              <Alert message={formatMessage({ id: 'login_alert' })} type='info' showIcon />
-            </Col> */}
-            <FormItem label={null}>
-              {getFieldDecorator('mail', {
-                // initialValue: 'superadmin@cn.pwc.com', // A_general superMan
-                rules: [
-                  {
-                    required: true,
-                    pattern: /@cn.pwc.com$/,
-                    message: formatMessage({ id: 'input_require' }, { name: username })
-                  }
-                ]
-              })(
-                <Input
-                  prefix={<Icon type='mail' style={{ fontSize: 13 }} />}
-                  placeholder={formatMessage({ id: 'input_placeholder' }, { name: username })}
+          <div className='login-pop'>
+            <ul>
+              <li className={step > 0 ? 'on' : ''}>
+                <span className='num'>
+                  <em>1</em>
+                  <i className='round1' />
+                </span>
+                <span className='line lbg-r' />
+                <p className='lbg-txt'>确认账号</p>
+              </li>
+              <li className={step > 1 ? 'on' : ''}>
+                <span className='num'>
+                  <em>2</em>
+                  <i className='round2' />
+                  <i className='round3' />
+                </span>
+                <span className='line lbg-l' />
+                <span className='line lbg-r' />
+                <p className='lbg-txt'>安全验证</p>
+              </li>
+              <li className={step > 2 ? 'on' : ''}>
+                <span className='num'>
+                  <em>3</em>
+                  <i className='round4' />
+                </span>
+                <span className='line lbg-l' />
+                <p className='lbg-txt'>重置密码</p>
+              </li>
+            </ul>
+            <form className='login-form' style={{ display: step === 1 ? 'block' : 'none' }}>
+              <div>
+                <span>邮箱</span>
+                <label className='iconfont' onClick={() => this.clearInput('email')}>
+                  &#xe66e;
+                </label>
+                <input
+                  type='text'
+                  placeholder='请输入您的邮箱'
+                  id='email'
+                  value={this.state.email}
+                  ref='email'
+                  onChange={this.handleEmail}
                 />
-              )}
-            </FormItem>
-            <FormItem>
-              <Row gutter={8}>
-                <Col span={15}>
-                  {getFieldDecorator('verificationCode', {
-                    rules: [
-                      {
-                        required: false,
-                        message: '请输入验证码！'
-                      }
-                    ]
-                  })(<Input prefix={<Icon type='mail' />} placeholder='验证码' />)}
-                </Col>
-                <Col span={8}>
-                  <Button disabled={count} style={{ width: 102 }} onClick={() => this.onGetCaptcha()}>
-                    {count ? `${count} s` : '获取验证码'}
-                  </Button>
-                </Col>
-              </Row>
-            </FormItem>
-            <FormItem label={null}>
-              {getFieldDecorator('password', {
-                // initialValue: '123456',
-                rules: [{ required: true, message: formatMessage({ id: 'input_require' }, { name: password }) }]
-              })(
-                <Input
-                  prefix={<Icon type='lock' style={{ fontSize: 13 }} />}
-                  placeholder={formatMessage({ id: 'input_placeholder' }, { name: password })}
-                  type='password'
-                />
-              )}
-            </FormItem>
-            <FormItem label={null}>
-              {getFieldDecorator('Lpassword', {
-                // initialValue: '123456',
-                rules: [
-                  {
-                    required: true,
-                    message: '请输入与上面相同的密码',
-                    validator: (relu, value, cb) => {
-                      console.log(value)
-                      this.props.form.validateFields(['password'], (err, v) => {
-                        if (err) {
-                          cb(false)
-                        } else {
-                          console.log(value, v.password)
-                          if (value !== v.password) {
-                            cb(false)
-                          } else {
-                            cb()
-                          }
-                        }
-                      })
-                    }
-                  }
-                ]
-              })(
-                <Input
-                  prefix={<Icon type='lock' style={{ fontSize: 13 }} />}
-                  placeholder={formatMessage({ id: 'input_placeholder' }, { name: password })}
-                  type='password'
-                />
-              )}
-            </FormItem>
-            <Row>
-              <Col>
-                <Button type='primary' htmlType='submit' style={{ width: '100%' }} size='large' loading={loading}>
-                  {formatMessage({ id: 'updatePWD' })}
-                </Button>
-              </Col>
-              <Col style={{ marginTop: 16, fontSize: 14, fontWeight: 400 }}>
-                <span>{'前往'}</span>
-                <a
-                  onClick={() => {
-                    this.props.pathJump('Login')
-                  }}
-                >
-                  {'登录'}
+                <small style={{ color: '#e0301e', marginLeft: '2%' }}>{this.state.emailError}</small>
+              </div>
+              <div style={{ marginTop: 13 }}>
+                <span>验证码</span>
+                <div className='yanzheng'>
+                  <input
+                    type='text'
+                    placeholder='输入验证码'
+                    value={inputCode}
+                    id='inputCode'
+                    onChange={this.handleInputCode}
+                  />
+                  <i className={'code'} id='checkCode'>
+                    <img src={`${host}/captcha?v=${code}`} style={{ width: 100, height: 40 }} />
+                  </i>
+                </div>
+                <a onClick={this.createCode} style={{ marginLeft: '2%' }}>
+                  {' '}
+                  换一张
                 </a>
-              </Col>
-            </Row>
-          </Form>
-        </Col>
-      </Row>
+              </div>
+              <input type='button' value='确认并发送验证码' id='comfir' onClick={() => this.getEmailCode()} />
+            </form>
+            <form className='login-form2' style={{ display: step === 2 ? 'block' : 'none' }}>
+              <table>
+                <tbody>
+                  <tr className='yx'>
+                    <td />
+                    <td>
+                      邮箱: <span>{email}</span>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className='yxyz'>邮箱验证码</td>
+                    <td className='size34'>
+                      <label className='iconfont'>&#xe66e;</label>
+                      <input
+                        type='text'
+                        placeholder='输入邮箱验证码'
+                        id='email2'
+                        ref='pwd'
+                        value={this.state.Vcode}
+                        onChange={e => this.setState({ Vcode: e.target.value })}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td className='size34'>
+                      <input type='button' value='下一步' id='comfir1' onClick={this.checkCode} />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td className='yz'>
+                      <a
+                        onClick={() => {
+                          let r = window.confirm('再次发送验证码？')
+                          if (r) {
+                            const { dispatch } = this.props
+                            const { email } = this.state
+                            let json = {
+                              mail: email,
+                              accountType: '3'
+                            }
+                            dispatch(fetchVerificationCode(json)).then(e => {
+                              if (e.error) {
+                                alert(e.error.message)
+                              } else {
+                                alert(e.payload.testBody)
+                              }
+                            })
+                          }
+                        }}
+                      >
+                        验证码未收到?
+                      </a>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+
+            <form className='login-form3' style={{ display: step === 3 ? 'block' : 'none' }}>
+              <table>
+                <tbody>
+                  <tr>
+                    <td className='mm'>新密码</td>
+                    <td>
+                      <label className='iconfont x1' onClick={() => this.clearInput('setvalue')}>
+                        &#xe66e;
+                      </label>
+                      <input
+                        type='password'
+                        placeholder='输入新密码'
+                        ref='pwd'
+                        value={this.state.setvalue}
+                        onChange={this.handlePwd}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td className='mm'>确认密码</td>
+                    <td>
+                      <label className='iconfont x2' onClick={() => this.clearInput('value')}>
+                        &#xe66e;
+                      </label>
+                      <input
+                        type='password'
+                        placeholder='确认新密码'
+                        ref='newpwd'
+                        value={this.state.value}
+                        onChange={this.handlePwdtwo}
+                      />
+                    </td>
+                  </tr>
+                  <tr>
+                    <td />
+                    <td>
+                      <input type='button' value='完 成' id='comfir2' onClick={() => this.submit()} />
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </form>
+          </div>
+        </div>
+      </div>
     )
   }
 }
 
-ResetPWD.propTypes = {
-  form: React.PropTypes.object.isRequired,
-  intl: intlShape.isRequired,
-  login: React.PropTypes.func,
-  fetchVerificationCode: React.PropTypes.func
+ResetPwd.propTypes = {
+  pathJump: React.PropTypes.func
 }
+const mapStateToProps = state => ({
+  user: state.get('user')
+})
 
-class CheckResetPWD extends React.Component {
-  // componentWillMount(){
-  //   let page = '';
-  //   //console.log('CheckResetPWD',this.props)
-  //   if(this.props.user && this.props.user.get('status')===fetchState.success){
-  //     let _user = this.props.user.toJS();
-  //
-  //     // _user.roles.map(v=>{
-  //     //   switch (v.id){
-  //     //     case 'applicant':page = '/my-list/waiting';
-  //     //           break;
-  //     //     case 'manager':page = '/supervisor/approving';
-  //     //           break;
-  //     //     default:page = null;
-  //     //   }
-  //     // })
-  //     //
-  //     // this.setState({page})
-  //     this.props.pathJump(this.props.location.query.next || '/my-list/waiting')
-  //   }
-  // }
-  render () {
-    return <ResetPWD {...this.props} page={this.props.user.toJS().roles} />
-  }
-}
-
-export default Form.create()(injectIntl(CheckResetPWD))
+export default connect(mapStateToProps)(ResetPwd)

@@ -2,7 +2,7 @@
  * @Author: Maoguijun
  * @Date: 2018-01-03 16:32:20
  * @Last Modified by: Maoguijun
- * @Last Modified time: 2018-03-14 16:09:18
+ * @Last Modified time: 2018-03-19 14:18:44
  */
 import React from 'react'
 import { injectIntl } from 'react-intl'
@@ -1373,7 +1373,7 @@ class CourseDetail extends React.Component {
           return ({
             ...item,
             title: formatMessage({ id: `courseDetailChapter_${item.dataIndex}` }),
-            option: { rules: [{ required: true, message:' ' }] },
+            option: item.option || { rules: [{ required: true, message:' ' }] },
             placeholder: formatMessage({ id: `courseDetailChapter_${item.dataIndex}` })
           })
         } else {

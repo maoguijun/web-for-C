@@ -8,10 +8,11 @@ import {
   question_tableField as _question,
   courseType_tableField as _courseType,
   group_tableField as _group
-} from '../config'
+} from '../config';
 
 const language = {
   // common
+  login: '登录',
   new_btn: 'NEW',
   new_submit_btn: 'Submit',
   submitSuccess: '已成功提交',
@@ -52,6 +53,7 @@ const language = {
   suspend: '暂停',
   detail: '详情',
   update_password: '修改密码',
+  forgotPassword: '忘记密码',
   answerWithThisTeacher: '该讲师的提问回答',
   courseWithThisTeacher: '该讲师的课程',
   workWithThisTeacher: '该讲师的作业',
@@ -87,7 +89,7 @@ const language = {
   plsOnlyOne: '只能选择一条数据',
   deleteOne: '删除一条',
   plsSaveToEdit: '请先保存再编辑',
-  adminLoging: '管理员登录',
+  adminLoging: '账号密码登录',
 
   // 转码状态
   Transcoding: '转码中,请稍等...',
@@ -111,10 +113,13 @@ const language = {
 
   // 专业领域
   'Marketing and Communications': '市场营销和传媒',
-  'Management skills and Communication/influence skills': '管理技能与高效沟通技能',
-  'International Relations/MNCs/Global Leadership/Innovation': '国际关系/跨国企业/全球领导力/创新领域',
+  'Management skills and Communication/influence skills':
+    '管理技能与高效沟通技能',
+  'International Relations/MNCs/Global Leadership/Innovation':
+    '国际关系/跨国企业/全球领导力/创新领域',
   'Human resources and consulting skills': '人力资源管理及咨询服务',
-  'Consulting/business process/technology transformation': '咨询服务/业务流程/科技转型',
+  'Consulting/business process/technology transformation':
+    '咨询服务/业务流程/科技转型',
 
   //  login
   login_alert: 'alert',
