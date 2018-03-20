@@ -1,26 +1,15 @@
-import React, { Component } from 'react';
-import { injectIntl, intlShape, FormattedMessage } from 'react-intl';
-// import ImmutablePropTypes from 'react-immutable-proptypes'
-import {
-  Icon,
-  Form,
-  Input,
-  Button,
-  Row,
-  Col,
-  Alert,
-  message,
-  notification,
-  Modal
-} from 'antd';
-import LocaleBtn from '../../../containers/global/LocaleBtn';
-import { fetchState } from 'config';
-import { encryptAes, encryptSha256 } from '../../../utils/common';
-import moment from 'moment';
-import SimpleForm from '../../../components/antd/SimpleForm';
+import React, { Component } from 'react'
+import { injectIntl, intlShape, FormattedMessage } from 'react-intl'
+import ImmutablePropTypes from 'react-immutable-proptypes'
+import { Icon, Form, Input, Button, Row, Col, Alert, message, notification, Modal } from 'antd'
+import LocaleBtn from '../../../containers/global/LocaleBtn'
+import { fetchState } from 'config'
+import { encryptAes, encryptSha256 } from '../../../utils/common'
+import moment from 'moment'
+import SimpleForm from '../../../components/antd/SimpleForm'
 const FormItem = Form.Item
-import logo1 from '../../../../public/logos/logo1.png';
-import './login.scss';
+import logo1 from '../../../../public/logos/logo1.png'
+import './login.scss'
 
 export class Login extends Component {
   constructor (props) {
@@ -64,13 +53,12 @@ export class Login extends Component {
                 if (!err) {
                   // 加密处理
                   console.log(moment().valueOf())
-                  let pwd = encryptAes(
-                    `${encryptSha256(values.password)},${new Date().getTime()}`
-                  )
+                  let pwd = encryptAes(`${encryptSha256(values.password)},${new Date().getTime()}`)
                   values = {
                     ...values,
                     password: pwd,
-                    type: '0'
+                    type: '3',
+                    equipmentType: '1'
                   }
                   console.log('form', values)
                   this.setState({ loading: true })
@@ -100,30 +88,20 @@ export class Login extends Component {
             {/* <Col offset={baseLeft} span={baseRight}>
               <Alert message={formatMessage({ id: 'login_alert' })} type='info' showIcon />
             </Col> */}
-            <FormItem
-              label={null}
-              className='login-input'
-              style={{ marginTop: -1 }}
-            >
+            <FormItem label={null} className='login-input' style={{ marginTop: -1 }}>
               {getFieldDecorator('mail', {
                 initialValue: 'wenbo.wang@loncus.com', // A_general superMan
                 rules: [
                   {
                     required: true,
                     // pattern: /@cn.pwc.com$/,
-                    message: formatMessage(
-                      { id: 'input_require' },
-                      { name: username }
-                    )
+                    message: formatMessage({ id: 'input_require' }, { name: username })
                   }
                 ]
               })(
                 <Input
                   // prefix={<Icon type='mail' style={{ fontSize: 13 }} />}
-                  placeholder={formatMessage(
-                    { id: 'input_placeholder' },
-                    { name: username }
-                  )}
+                  placeholder={formatMessage({ id: 'input_placeholder' }, { name: username })}
                 />
               )}
             </FormItem>
@@ -133,19 +111,13 @@ export class Login extends Component {
                 rules: [
                   {
                     required: true,
-                    message: formatMessage(
-                      { id: 'input_require' },
-                      { name: password }
-                    )
+                    message: formatMessage({ id: 'input_require' }, { name: password })
                   }
                 ]
               })(
                 <Input
                   // prefix={<Icon type='lock' style={{ fontSize: 13 }} />}
-                  placeholder={formatMessage(
-                    { id: 'input_placeholder' },
-                    { name: password }
-                  )}
+                  placeholder={formatMessage({ id: 'input_placeholder' }, { name: password })}
                   type='password'
                 />
               )}
@@ -172,7 +144,7 @@ export class Login extends Component {
               >
                 <a
                   onClick={() => {
-                    this.props.pathJump('resetPassword')
+                    this.props.pathJump('resetPwd')
                   }}
                 >
                   {formatMessage({ id: 'forgotPassword' })}

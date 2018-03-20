@@ -2,7 +2,7 @@
  * @Author: Maoguijun
  * @Date: 2018-01-02 12:16:58
  * @Last Modified by: Maoguijun
- * @Last Modified time: 2018-03-08 14:08:20
+ * @Last Modified time: 2018-03-19 11:12:35
  */
 import React, { PureComponent } from 'react'
 import { injectIntl } from 'react-intl'
@@ -441,9 +441,9 @@ class Student extends React.Component {
             </Row>
           )}
           pagination={{
-            pageSize: 20,
+            pageSize: tableLimit,
             total: count,
-            showQuickJumper: count > 20,
+            showQuickJumper: count > tableLimit,
             current: currentPage
           }}
           onChange={this.changeTable}

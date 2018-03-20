@@ -1,13 +1,8 @@
-import { connect } from 'react-redux';
-import {
-  login,
-  fetchVerificationCode,
-  fetchUserInfo,
-  updatePwd
-} from '../modules/login';
-import { pathJump } from '../../../utils/';
+import { connect } from 'react-redux'
+import { login, fetchVerificationCode, fetchUserInfo, updatePwd } from '../modules/login'
+import { pathJump } from '../../../utils/'
 
-import Login from '../components/Login';
+import Login from '../components/Login'
 
 const mapDispatchToProps = {
   login,

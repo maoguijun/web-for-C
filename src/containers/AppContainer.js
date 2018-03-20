@@ -9,11 +9,14 @@ import LocaleContainer from './LocaleContainer'
 import enUS from 'antd/lib/locale-provider/en_US'
 import { Modal, Button, message } from 'antd'
 import { pathJump } from '../utils/'
-import '../styles/core.scss'
 import moment from 'moment'
 import 'babel-polyfill'
-import './AppContainer_.scss'
 import { fetchUserInfo } from '../routes/Login/modules/login'
+import '../styles/core.scss'
+import '../styles/swiper-3.4.2.min.css'
+import '../styles/myfont/iconfont.css'
+import './AppContainer_.scss'
+import '../styles/common.css'
 moment.locale('zh')
 
 class AppContainer extends Component {

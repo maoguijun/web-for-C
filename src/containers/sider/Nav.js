@@ -135,21 +135,6 @@ class Side extends React.PureComponent {
             </Menu.Item>
           )
         })}
-        <Menu className='divider' />
-        <Menu.Item key='username'>
-          <div>
-            <span>
-              <Icon type='user' />
-              {userInfo && <span className='nav-text'>{userInfo.get('id')}</span>}
-            </span>
-          </div>
-        </Menu.Item>
-        <Menu.Item key='login'>
-          <span>
-            <Icon type='poweroff' />
-            <span className='logout'>Sign out</span>
-          </span>
-        </Menu.Item>
       </Menu>
     )
   }

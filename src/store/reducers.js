@@ -3,8 +3,7 @@ import { routerReducer } from 'react-router-redux'
 import localReducer from './locale'
 import userReducer from './user'
 import userInfoReducer from '../routes/Login/modules/login'
-import courseReducer from '../routes/course_manager/modules/course'
-import courseTypeReducer from '../routes/courseType_manager/modules/courseType'
+
 
 export const makeRootReducer = asyncReducers => {
   return combineReducers({
@@ -12,8 +11,6 @@ export const makeRootReducer = asyncReducers => {
     locale: localReducer,
     user: userReducer,
     userInfo: userInfoReducer,
-    course: courseReducer,
-    courseType: courseTypeReducer,
     ...asyncReducers
   })
 }

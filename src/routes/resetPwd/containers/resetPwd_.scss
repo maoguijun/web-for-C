@@ -1,0 +1,607 @@
+/*
+ * @Author: Maoguijun
+ * @Date: 2018-03-20 14:24:55
+ * @Last Modified by: Maoguijun
+ * @Last Modified time: 2018-03-20 14:59:36
+ */
+.edit {
+  input#mark::-webkit-input-placeholder { /* WebKit browsers*/
+    　　color:red;font-size:0.14rem;  }
+  input#mark:-moz-placeholder {  /* Mozilla Firefox 4 to 18*/
+    　　color:red;font-size:0.14rem;  }
+  input#mark::-moz-placeholder {  /* Mozilla Firefox 19+*/
+    　　color:red;font-size:0.14rem;  }
+  input#mark:-ms-input-placeholder { /* Internet Explorer 10+*/
+    　　color:red;font-size:0.14rem;  }
+  input{
+    font-size:0.14rem !important;
+  }
+  .main{
+    width:12.8rem;
+    margin:0 auto;
+    padding: 10px 0px;
+    font-size: 0.23rem;
+  }
+  .main .title{
+    height:1rem;
+    line-height: 1rem;
+  }
+  .main  .title p{
+    font-size: 0.42rem;
+    color:white;
+    font-family: 'arial';
+    display: inline-block;
+    float: left;
+  }
+  .main p span{
+    font-size: 0.14rem;
+    letter-spacing: 1px;
+  }
+  .main .biaodan{
+    margin:20px auto 10px;
+    background:white;
+    border-radius: 10px;
+  }
+  .main .biaodan .zhangjie{
+    padding: 14px 40px 20px 35px;
+    border-bottom:10px solid #f5f5f5;
+  }
+
+  .main .biaodan .zhangjie ul{
+    font-size: .3rem;
+  }
+  .biaodan .zhangjie i{
+    font-size: .12rem;
+  }
+  .zhangjie .yaoqiu{
+    font-size: .18rem;
+    margin-top: .15rem;
+    -webkit-user-select: none;
+    -moz-user-select:none;
+    -ms-user-select:none;
+    user-select:none;
+  }
+  .yaoqiu p{
+    width: 90%;
+    vertical-align: top;
+    display: inline-block;
+    color:#666666;
+    line-height:.3rem;
+    font-size: 0.14rem;
+  }
+  .biaodan a{
+    font-size: .14rem;
+      color: #ec8378;
+      display: block;
+  }
+  .biaodan h3{
+    font-size: 0.22rem;
+    margin:13px 0px 5px;
+    color:#333;
+    font-weight: 400;
+  }
+  .biaodan span{
+    font-size: 0.13rem;
+    display: block;
+    color:#a0a0a0;
+    letter-spacing: .5px;
+  }
+  .biaodan .bd-body {
+    font-size: .22rem;
+    padding: 20px 5px 50px 16px;
+    color:#898989;
+  }
+  .bd-body .bd-title{
+    margin-bottom:4px;
+  }
+  .neirong .one{
+    padding-top: 10px;
+  }
+  .bd-title .one{text-align: left;}
+  .bd-title .one,.neirong .one{
+    width:8%;
+  }
+   input#mark::-webkit-input-placeholder,textarea::-webkit-input-placeholder{
+    color:#333;
+  }
+  input#mark::-moz-placeholder,input#mark::-moz-placeholder,input#mark:-ms-input-placeholder{
+    color:#333;
+  }
+  input#mark:focus::-webkit-input-placeholder,textarea:focus::-webkit-input-placeholder{
+    color:transparent;
+  }
+  input#mark:focus::-moz-placeholder,input#mark:focus::-moz-placeholder,input#mark:focus:-ms-input-placeholder{
+    color: transparent;
+  }
+   .bd-body .bd-title button{
+    background: #d7d7d7;
+    color:white;
+    border-radius: 2px;
+    font-size: .1rem;
+  }
+  .bd-body .bd-title input{
+    width:86%;
+    height:.35rem;
+    line-height:.35rem;
+    font-size: .18rem;
+    text-indent: 8px;
+    border:1px solid #e6e5e5;
+    border-radius: 3px;
+  }
+  .txt{
+    padding: 0.15rem 0.1rem 0.1rem 1rem;
+  }
+  .txt #file{
+    position: absolute;
+    overflow: hidden;
+    left: 0;
+    top: 0;
+    opacity: 0;
+
+  }
+  .txt .upload{
+    padding: 4px 10px;
+    height: 20px;
+    line-height: 20px;
+    border-radius: 5px;
+    background: #e0301e;
+    color:white;
+    display:inline-block;
+    text-align: center;
+    font-size: 0.14rem;
+    font-weight:300;
+    position: relative;
+  }
+  .txt .size{
+    display:inline-block!important;
+  }
+  .txt-sm{
+    margin-top:10px;
+    overflow: hidden;
+    border:1px solid #e6e5e5;
+    padding:5px 0px;
+    height:.35rem;
+    line-height:.35rem;
+    width:86%;margin-left:1rem;
+    border-radius: 3px;
+    margin-bottom:0.1rem;
+  }
+
+  .biaodan .bd-body .txt-sm li{
+    float: left;
+    margin-right:24%;font-size:.13rem;
+    color:#b8b8b8;
+  }
+  .bd-body .txt-sm li.gongju{
+    margin-right:0%;
+    width:10%;
+    float: right;
+  }
+  .txt-sm i.name{
+    border: 1px solid #ff5057;
+    background: #ffe5e6;
+    border-radius: 3px;
+    color: #ff9396;
+    padding: 2px 3px;
+    margin-left:0.1rem;
+    line-height:0.25rem;
+    text-align: center;
+    float: left;
+  }
+  .bd-body .txt-sm li.gongju i{
+    margin:12%;
+    cursor: pointer;
+    vertical-align: middle;
+  }
+  .neirong{
+    margin-top:.15rem;
+  }
+  .neirong textarea{
+    width: 84.6%!important;
+    height:1.5rem;
+    vertical-align: top;
+    outline: none;
+    border:1px solid #e6e5e5;
+    overflow: hidden;
+    padding:8px;
+    border-radius: 3px;
+    font-size: 0.14rem;
+    color:#333;
+  }
+  .button{
+    width:100%;
+  }
+  .save{
+    width:30%;
+    margin:30px auto 0px;
+  }
+  .save button{
+    width:45%;height:.5rem;font-size: 0.16rem;
+    border:1px solid #ccc;border-radius: 5px;
+    color:#bcbcbc;
+  }
+  /*注册*/
+  .prop{
+    width:4.2rem;
+    position:absolute;
+    left:50%;
+    margin-left:-2.1rem;
+    margin-top:1.1rem;
+
+  }
+  .prop-title{
+    color:white;
+    height:1rem;
+  }
+  .prop-title a{
+    display: inline-block;
+    vertical-align: text-top;
+  }
+  .prop-title a.pwc{
+    margin-top: 0.15rem;
+  }
+  .prop-title h3{
+    font-size: 0px;
+    display: inline-block;
+    text-align: right;
+    letter-spacing:2px;
+    vertical-align: text-top;
+    margin-left: 0.3rem;
+  }
+  .prop-title span{
+    font-size: .16rem;
+    display: block;
+    letter-spacing:0px;
+    font-weight: 300;
+    line-height: 0.4rem;
+  }
+  .prop-body{
+    height:4rem;
+    background: white;
+    font-size: .3rem;
+    padding: 0.4rem 0px 0.12rem;
+    border-radius:4px;
+    margin-top: .2rem;
+  }
+  .prop-body p{
+    text-align: center;
+    color:#333;
+    margin:3px 0px;
+    font-size: 0.2rem;
+  }
+  form{
+    width:80%;
+    margin:35px auto 0px;
+    position: relative;
+  }
+  #login{
+    width:3.4rem;
+  }
+  form input{
+    width:100%;
+    height:.46rem;
+    line-height:.46rem;
+    border:1px solid #e1e1e1;
+    /* border-radius: 2px; */
+    text-indent: 8px;
+
+  }
+  .danger{
+    color: #e0301e!important;
+  }
+  form .danger{
+    border-color: #e0301e;
+  }
+  form label{
+    position: absolute;
+    top: .15rem;
+    right: 5px;
+    color:#c4bfbf;
+
+  }
+  #login label{
+    font-size: 0.13rem;
+  }
+
+  label.two{
+    top:.75rem;
+  }
+  input[type="text"]{
+    border-bottom: none;
+  }
+  input[type=button]{
+    margin-top:.15rem;
+    height:.5rem;
+    background: #e0301e;
+    color:white;
+    border:none;
+    width:101%;
+    font-size: 0.18rem;
+    cursor:pointer
+  }
+  .prop-body .mima{
+    color:#e0301e;
+    font-size: .18rem;margin-top:.2rem;
+  }
+  .prop-body .mima a{
+    font-size: 0.14rem;
+  }
+  /*登录步骤*/
+  .prop-login{
+    width:10rem;
+    border-radius:5px;
+    font-size: 0.2rem;
+    left:50%;
+    position: absolute;
+    margin-left:-5rem;
+    margin-top:.65rem;
+  }
+  .prop-login .login-pop{
+    width:100%;
+    height:4.5rem;
+    background: white;
+    padding: 25px 0px;
+    margin-top:30px;
+    border-radius: 6px;
+  }
+  .login-pop ul{
+    padding: 0 0.8rem;
+    overflow: hidden;
+  }
+
+  .login-top{
+    position: relative;
+    color:white;
+    height:100px;
+  }
+  .login-top a.logo1{
+    width:0.5rem;
+    position: absolute;
+    bottom:0px;
+    left:0px;
+  }
+  .login-top a.logo1 img{
+    width:100%;
+    height:100%;
+  }
+  .login-top .login-res{
+    position: absolute;
+    bottom:0px;
+    right:0px
+  }
+  .login-top .login-res a{
+    font-size: 0.14rem;
+    color:#fff;
+  }
+  .login-top .learn{
+    display: block;
+    font-weight: 300;
+    font-size: 0.16rem;
+  }
+  .login-top .img-logo{
+    text-align: right;
+    width:2.3rem;
+    margin-left:-1.3rem;
+    left:50%;
+    bottom:0px;
+    position: absolute;
+
+  }
+  .login-top .img-logo a{
+    display: block;
+    margin-bottom: 6px;
+  }
+
+  .login-pop ul li{
+    float: left;
+    width:33.33333333%;
+    position: relative;
+    text-align: center;
+  }
+  .login-pop ul li .num{
+    position: relative;
+    z-index: 2;
+    background: white;
+    width: 50px;
+    height: 26px;
+    line-height:26px;
+    text-align: center;
+    display: inline-block;
+    color:#d4d4d4;
+  }
+  .login-pop ul li p{
+    color:#dedede;
+  }
+  .gray{
+    color:'#93999f'!important
+  }
+  .num em{
+    font-style: italic;
+    font-size: 0.34rem;
+    font-weight: 700;
+    font-family: Georgia;
+  }
+  .num i{
+    position: absolute;
+    width:5px;
+    height:5px;
+    background: #d4d4d4;
+    border-radius: 5px;
+    top:50%;
+    margin-top:-1.3px;
+  }
+  .round1,.round3{
+    right:-3px;
+  }
+  .round2,.round4{
+    left:-3px;
+  }
+  .round4{
+    width:0px;
+  }
+  .line{
+    height: 1px;
+    background: #dbdbdb;
+    display: inline-block;
+    width: 50%;
+    top: 13px;
+    position: absolute;
+    z-index: 1;
+  }
+
+  .login-pop .on .line,.on i{
+    background: red;
+  }
+  .login-pop .on p,.on em{
+    color: red;
+  }
+
+  .lbg-l{
+    left:0;
+  }
+  .lbg-r{
+    right:0;
+  }
+  .lbg-txt{
+    font-size: 0.14rem;
+  }
+  .login-form{
+    position: relative;
+    padding-left: 0.5rem;
+    overflow: hidden;
+  }
+  .login-form input{
+    border:1px solid #e1e1e1;
+  }
+  .login-form label{
+    position: absolute;
+    right: 2.6rem;
+    top: .2rem;
+    z-index: 100;
+    font-size: 0.13rem;
+  }
+  /*验证码*/
+  .code{
+    font-family: '[Cuisine]';
+    color: #000;
+    font-size: .2rem;
+    line-height:.47rem;
+    font-style: italic;
+    width: 1rem;
+    height: .47rem;
+    letter-spacing: 1px;
+    text-align: center;
+    border:1px solid #e1e1e1;
+    border-radius:3px;
+    vertical-align: middle;
+    display: inline-block;
+    float: right;
+  }
+
+  .login-form a{
+    color:#e0301e;
+    font-size: 0.14rem;
+  }
+  .login-form #inputCode{
+    width:2.26rem;
+    display: inline-block;
+  }
+  .login-form div{
+    width:81%;
+    margin:0px auto;
+  }
+  .login-form #email{
+    width:3.4rem;
+    display: inline-block;
+  }
+  .login-form div span{
+    width: 20%;
+    display: inline-block;
+    float: left;
+    text-align:center;
+    line-height:0.5rem;
+    font-size: 0.15rem;
+  }
+  .yanzheng{
+    width:3.44rem!important;
+    display: inline-block;
+  }
+  .login-form #comfir,.login-form2 #comfir,.login-form3 #comfir{
+    margin-top:0.3rem;
+    border:none;
+    outline: none;
+    text-align: center;
+    width:3.44rem;
+    margin-left: 26%;
+    display: block;
+    font-weight: 700;
+  }
+
+  .login-form2,.login-form3{
+    width:50%;
+  }
+  .login-form2 table,.login-form3 table{
+    width:100%;
+    border-collapse:separate;
+    border-spacing:13px;
+    margin-left: -.5rem;
+  }
+
+  .login-form2 table tr{
+    height:.5rem;
+  }
+  .login-form2 table .yx td{
+    color:#666;
+    font-size: 0.14rem;
+  }
+  .login-form2 tr .yxyz{
+    font-size: 0.15rem;
+    text-align: center;
+  }
+  .emailname{
+    width: 0.4rem;
+    display: inline-block;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    vertical-align: middle;
+  }
+  .login-form2 table td label{
+    top: .95rem;
+    right: .75rem;
+    font-size: 0.13rem;
+  }
+  .login-form2 #email2{
+    border:1px solid #ccc;
+    border-radius: 4px;
+  }
+  .login-form2 #comfir,.login-form3 #comfir{
+    margin-left:0px;
+    width:100%;
+  }
+  .login-form2 td.yz {
+    text-align: right;
+    color: #e0301e;
+    font-size: 0.14rem;
+    display: block;
+  }
+
+  .login-form3 input{
+    border:1px solid #e1e1e1;
+  }
+  .login-form3 .mm{
+    font-size: 0.15rem;
+    text-align: center;
+  }
+  .login-form3 .x1{
+    top:.35rem;
+    right:.75rem;
+    font-size: 0.13rem;
+  }
+  .login-form3 .x2{
+    top:1rem;
+    right:.75rem;
+    font-size: 0.13rem;
+  }
+
+}

@@ -2,7 +2,7 @@
  * @Author: Maoguijun
  * @Date: 2018-01-02 12:16:58
  * @Last Modified by: Maoguijun
- * @Last Modified time: 2018-03-08 14:15:01
+ * @Last Modified time: 2018-03-20 12:00:04
  */
 import React, { PureComponent } from 'react'
 import { injectIntl } from 'react-intl'
@@ -304,7 +304,7 @@ class Teacher extends React.Component {
       {
         dataIndex: _teacher.detail,
         render: (text, record, index) => {
-          return <a onClick={() => this.detail(record.get('id'))}>{formatMessage({ id: 'detail' })}</a>
+          return <a onClick={() => this.detail(record.getIn(['person', 'id']))}>{formatMessage({ id: 'detail' })}</a>
         }
       }
     ].map(item => ({
@@ -418,9 +418,9 @@ class Teacher extends React.Component {
             </Row>
           )}
           pagination={{
-            pageSize: 20,
+            pageSize: tableLimit,
             total: count,
-            showQuickJumper: count > 20,
+            showQuickJumper: count > tableLimit,
             current: currentPage
           }}
           onChange={this.changeTable}

@@ -3,7 +3,7 @@ import { rootPath, chilPath } from '../config'
 import { requireAuth } from '../components/authentication/requireAuth'
 import NotMatch from '../containers/global/NotMatch'
 import LoginRoute from './Login'
-import ResetPWD from './ResetPassword'
+import ResetPWD from './resetPwd'
 import Layout from '../layouts/CoreLayout'
 import Student from './user_manager/student'
 
